@@ -1,0 +1,13 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: darkslategrey;
+    color: azure;
+}
+
+header{
+    display: flex;
+    justify-content: center;
+    padding-block: 1rem;
+}
