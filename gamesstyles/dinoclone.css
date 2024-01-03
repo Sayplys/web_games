@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    overflow: hidden;
+}
+
+header{
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+}
+
+canvas{
+    position: absolute;
+    border: .1rem solid black;
+    height: 100%;
+    margin: auto;
+    top: 0;
+    background-color: aliceblue;
+    z-index: -1;
+}
