@@ -6,8 +6,29 @@
     color: azure;
 }
 
+a{
+    font-style: none;
+}
+
 header{
     display: flex;
     justify-content: center;
     padding-block: 1rem;
+}
+
+.gamesection{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.game{
+    display: flex;
+    background-color: #0000;
+    border: 0.1rem solid black;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    align-items: center;
+    flex-direction: column;
 }
