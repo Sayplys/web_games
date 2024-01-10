@@ -1,6 +1,7 @@
 var canvas = document.getElementById('gameCanvas')
 import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs";
+import { isGameRunning } from "./player.mjs";
 
 const enemy = {
     x: 0,
@@ -43,13 +44,16 @@ function removeEnemy(){
 
 export function spawnEnemyAtRandomIntervals() {
     spawnEnemy(enemy.color, canvas.width - enemy.width, floorY - enemy.height, enemy.width, enemy.height, enemy.hasPassed);
-    setTimeout(()=> {spawnEnemyAtRandomIntervals(floorY)}, randomInterval);
+    if(isGameRunning){
+        setTimeout(()=> {spawnEnemyAtRandomIntervals(floorY)}, randomInterval);
+    }
     return enemies
 }
 
 export function updateEnemy(deltaTime){
     printEnemies(deltaTime)
-    removeEnemy()
+    if(isGameRunning)
+        removeEnemy()
 }
 
 

@@ -2,7 +2,9 @@ import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs"
 
 let counter =  document.getElementById("pointconter")
+const losemsg = document.getElementById('lose-message')
 let deltaTime = 0
+export let isGameRunning = true
 
 let player = {
     x: 80,
@@ -30,7 +32,7 @@ function jump(){
 
 function gravity(){
     if(player.y < floorLimit){
-        player.yVelocity -= deltaTime * 0.003
+        player.yVelocity -=  deltaTime * 0.003
     }
     else{
         player.yVelocity = 0
@@ -51,15 +53,30 @@ function countPoint(enemies){
     }
 }
 
+function lose(enemies){
+    let distance = 0
+    for(let i = 0; i < enemies.length; i++){
+        distance = Math.sqrt(Math.abs(enemies[i].x - player.x) + Math.abs(enemies[i].y - player.y))
+        if(distance < 5.7){
+            losemsg.style.visibility = "visible"
+            losemsg.innerHTML = "you lose"
+            isGameRunning = false
+        } 
+    }
+}
+
 export function updatePlayer(delta, enemies){
-    deltaTime = delta
     printPlayer(player.color, player.x, player.y, player.width, player.height)
+    deltaTime = delta
     gravity(enemies)
-    countPoint(enemies)
+    if(isGameRunning){ 
+        countPoint(enemies)
+        lose(enemies)
+    }
 }
 
 document.addEventListener('keydown', function(event){
-    if(event.key === 'ArrowUp' && player.y >= floorLimit){
+    if(event.key === 'ArrowUp' && player.y >= floorLimit && isGameRunning){
         jump(deltaTime)
     }
 })
