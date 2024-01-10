@@ -42,6 +42,7 @@ function removeEnemy(){
 export function spawnEnemyAtRandomIntervals(floorY) {
     spawnEnemy("red", canvas.width - enemy.width, floorY - enemy.height, enemy.width, enemy.height);
     setTimeout(()=> {spawnEnemyAtRandomIntervals(floorY)}, randomInterval);
+    return enemies
 }
 
 export function updateEnemy(deltaTime){
