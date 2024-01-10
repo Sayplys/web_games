@@ -15,8 +15,8 @@ function update(timeStamp){
     let delta = timeStamp - lastTime
 
     updateEnviroment()
-    updatePlayer(delta)
-    updateEnemy(delta)
+    let player = updatePlayer(delta)
+    updateEnemy(delta, player)
 
     lastTime = timeStamp
     requestAnimationFrame(update)

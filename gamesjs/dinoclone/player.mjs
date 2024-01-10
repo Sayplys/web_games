@@ -1,6 +1,7 @@
 import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs"
 
+let counter =  document.getElementById("pointconter")
 let deltaTime = 0
 
 let player = {
@@ -10,10 +11,12 @@ let player = {
     color: 'black',
     yVelocity: 0,
     width: 35,
-    height: 35
+    height: 35,
+    points: 0
 }
 
 let floorLimit = floorY - player.height
+export let nextEnemy = 0;
 
 function printPlayer(color, x, y, width, height){
     ctx.fillStyle = color
@@ -38,10 +41,16 @@ function gravity(){
     }
 }
 
-export function updatePlayer(delta){
+export function countPoint(){  
+    player.points++
+    counter.innerHTML = "points: " + player.points
+}
+
+export function updatePlayer(delta, ){
     deltaTime = delta
     printPlayer(player.color, player.x, player.y, player.width, player.height)
     gravity()
+    return player
 }
 
 document.addEventListener('keydown', function(event){

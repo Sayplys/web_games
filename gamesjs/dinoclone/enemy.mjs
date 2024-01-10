@@ -1,13 +1,15 @@
 var canvas = document.getElementById('gameCanvas')
 import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs";
+import { countPoint } from "./player.mjs";
 
 const enemy = {
     x: 0,
     y: 0,
     color: "red",
     width: 20, 
-    height: 40
+    height: 40,
+    hasPassed: false
 }
 
 const spawn = {
@@ -18,8 +20,8 @@ const spawn = {
 let randomInterval = Math.random() * (spawn.maxSpawnTime - spawn.minSpawnTime) + spawn.minSpawnTime;
 let enemies = [];
 
-function spawnEnemy(color, x, y, width, height){
-    let enemy = {color: color, width: width, height: height, x: x, y: y}
+function spawnEnemy(color, x, y, width, height, hasPassed){
+    let enemy = {color: color, width: width, height: height, x: x, y: y, hasPassed: hasPassed}
     ctx.fillStyle = color
     ctx.fillRect(x, y, width, height)
     enemies.push(enemy);
@@ -41,14 +43,20 @@ function removeEnemy(){
 }
 
 export function spawnEnemyAtRandomIntervals() {
-    spawnEnemy("red", canvas.width - enemy.width, floorY - enemy.height, enemy.width, enemy.height);
+    spawnEnemy(enemy.color, canvas.width - enemy.width, floorY - enemy.height, enemy.width, enemy.height, enemy.hasPassed);
     setTimeout(()=> {spawnEnemyAtRandomIntervals(floorY)}, randomInterval);
     return enemies
 }
 
-export function updateEnemy(deltaTime){
+export function updateEnemy(deltaTime, player){
     printEnemies(deltaTime)
     removeEnemy()
+    for(let i = 0; i < enemies.length; i++){
+        if(player.x > enemies[i].x && enemies[i].hasPassed === false){
+            enemies[i].hasPassed = true;
+            countPoint()
+        }
+    }
 }
 
 
