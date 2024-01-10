@@ -41,16 +41,21 @@ function gravity(){
     }
 }
 
-export function countPoint(){  
-    player.points++
-    counter.innerHTML = "points: " + player.points
+function countPoint(enemies){  
+    for(let i = 0; i < enemies.length; i++){
+        if(player.x > enemies[i].x && enemies[i].hasPassed === false){
+            enemies[i].hasPassed = true;
+            player.points++
+            counter.innerHTML = "points: " + player.points
+        }
+    }
 }
 
-export function updatePlayer(delta, ){
+export function updatePlayer(delta, enemies){
     deltaTime = delta
     printPlayer(player.color, player.x, player.y, player.width, player.height)
-    gravity()
-    return player
+    gravity(enemies)
+    countPoint(enemies)
 }
 
 document.addEventListener('keydown', function(event){

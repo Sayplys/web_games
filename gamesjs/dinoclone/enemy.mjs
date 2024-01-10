@@ -1,7 +1,6 @@
 var canvas = document.getElementById('gameCanvas')
 import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs";
-import { countPoint } from "./player.mjs";
 
 const enemy = {
     x: 0,
@@ -48,15 +47,9 @@ export function spawnEnemyAtRandomIntervals() {
     return enemies
 }
 
-export function updateEnemy(deltaTime, player){
+export function updateEnemy(deltaTime){
     printEnemies(deltaTime)
     removeEnemy()
-    for(let i = 0; i < enemies.length; i++){
-        if(player.x > enemies[i].x && enemies[i].hasPassed === false){
-            enemies[i].hasPassed = true;
-            countPoint()
-        }
-    }
 }
 
 
