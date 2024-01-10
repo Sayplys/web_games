@@ -1,11 +1,11 @@
-var canvas = document.getElementById('gameCanvas')
-var ctx = canvas.getContext('2d')
+import { ctx } from "../dinoclone.mjs"
+import { floorY } from "./enviroment.mjs"
 
 let deltaTime = 0
 
 let player = {
     x: 80,
-    y: 820,
+    y: 900,
     size: 0,
     color: 'black',
     yVelocity: 0,
@@ -13,7 +13,7 @@ let player = {
     height: 35
 }
 
-let floorLimit = 820
+let floorLimit = floorY - player.height
 
 function printPlayer(color, x, y, width, height){
     ctx.fillStyle = color
@@ -45,7 +45,7 @@ export function updatePlayer(delta){
 }
 
 document.addEventListener('keydown', function(event){
-    if(event.key === 'ArrowUp' && player.y >= 820){
+    if(event.key === 'ArrowUp' && player.y >= floorLimit){
         jump(deltaTime)
     }
 })
