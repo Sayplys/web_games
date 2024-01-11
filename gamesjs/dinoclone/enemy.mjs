@@ -3,13 +3,20 @@ import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs";
 import { isGameRunning } from "./player.mjs";
 
-const enemy = {
-    x: 0,
-    y: 0,
-    color: "red",
-    width: 20, 
-    height: 40,
-    hasPassed: false
+function Enemy(x, y, color, width, height) {
+    this.x = x - width
+    this.y = y - height
+    this.color = color
+    this.width = width
+    this.height = height
+    this.hasPassed = false
+    this.collider = function() {
+        let left = this.x 
+        let right = +this.x + +height 
+        let top = this.y
+        let botton = +this.y + +height
+        return {left, right, top, botton}
+    }
 }
 
 const spawn = {
@@ -20,10 +27,11 @@ const spawn = {
 let randomInterval = Math.random() * (spawn.maxSpawnTime - spawn.minSpawnTime) + spawn.minSpawnTime;
 let enemies = [];
 
-function spawnEnemy(color, x, y, width, height, hasPassed){
-    let enemy = {color: color, width: width, height: height, x: x, y: y, hasPassed: hasPassed}
-    ctx.fillStyle = color
-    ctx.fillRect(x, y, width, height)
+
+function spawnEnemy(x, y){
+    let enemy = new Enemy(x, y, 'red', '20', '30')
+    ctx.fillStyle = enemy.color
+    ctx.fillRect(x, y, enemy.width, enemy.height)
     enemies.push(enemy);
     randomInterval = Math.random() * (spawn.maxSpawnTime - spawn.minSpawnTime) + spawn.minSpawnTime
 }
@@ -37,13 +45,13 @@ function printEnemies(deltaTime){
 }
 
 function removeEnemy(){
-    if(enemies[0].x < 0 - enemy.width){
+    if(enemies[0].x < 0 - enemies[0].width){
         enemies.shift()
     }
 }
 
 export function spawnEnemyAtRandomIntervals() {
-    spawnEnemy(enemy.color, canvas.width - enemy.width, floorY - enemy.height, enemy.width, enemy.height, enemy.hasPassed);
+    spawnEnemy(canvas.width, floorY);
     if(isGameRunning){
         setTimeout(()=> {spawnEnemyAtRandomIntervals(floorY)}, randomInterval);
     }

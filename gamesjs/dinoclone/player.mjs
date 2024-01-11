@@ -6,19 +6,27 @@ const losemsg = document.getElementById('lose-message')
 let deltaTime = 0
 export let isGameRunning = true
 
-let player = {
-    x: 80,
-    y: 900,
-    size: 0,
-    color: 'black',
-    yVelocity: 0,
-    width: 35,
-    height: 35,
-    points: 0
+function Player() {
+    this.x = 80
+    this.y = 900
+    this.size = 0
+    this.color = 'black'
+    this.yVelocity = 0
+    this.width = 35
+    this.height = 35
+    this.points = 0
+    this.collider = function() {
+        let left = this.x 
+        let right = +this.x + +this.height 
+        let top = this.y
+        let botton = +this.y + +this.height
+        return {left, right, top, botton}
+    }
 }
 
+let player = new Player()
+
 let floorLimit = floorY - player.height
-export let nextEnemy = 0;
 
 function printPlayer(color, x, y, width, height){
     ctx.fillStyle = color
@@ -44,8 +52,10 @@ function gravity(){
 }
 
 function countPoint(enemies){  
+    let playerCollider = player.collider();
     for(let i = 0; i < enemies.length; i++){
-        if(player.x > enemies[i].x && enemies[i].hasPassed === false){
+        let enemyCollider = enemies[i].collider()
+        if(playerCollider.left > enemyCollider.right && enemies[i].hasPassed === false){
             enemies[i].hasPassed = true;
             player.points++
             counter.innerHTML = "points: " + player.points
@@ -54,13 +64,17 @@ function countPoint(enemies){
 }
 
 function lose(enemies){
-    let distance = 0
+    let playerCollider = player.collider();
     for(let i = 0; i < enemies.length; i++){
-        distance = Math.sqrt(Math.abs(enemies[i].x - player.x) + Math.abs(enemies[i].y - player.y))
-        if(distance < 5.7){
-            losemsg.style.visibility = "visible"
-            losemsg.innerHTML = "you lose"
-            isGameRunning = false
+        let enemyCollider = enemies[i].collider()
+        if(playerCollider.left < enemyCollider.right && playerCollider.right > enemyCollider.left){
+            if(playerCollider.botton  > enemyCollider.top){
+                console.log(enemyCollider)
+                console.log(playerCollider)
+                losemsg.style.visibility = "visible"
+                losemsg.innerHTML = "you lose"
+                isGameRunning = false
+            }
         } 
     }
 }
