@@ -12,7 +12,7 @@ function Enemy(x, y, color, width, height) {
     this.hasPassed = false
     this.collider = function() {
         let left = this.x 
-        let right = +this.x + +height 
+        let right = +this.x + +width 
         let top = this.y
         let botton = +this.y + +height
         return {left, right, top, botton}
@@ -29,7 +29,7 @@ let enemies = [];
 
 
 function spawnEnemy(x, y){
-    let enemy = new Enemy(x, y, 'red', '20', '30')
+    let enemy = new Enemy(x, y, 'red', '20', '40')
     ctx.fillStyle = enemy.color
     ctx.fillRect(x, y, enemy.width, enemy.height)
     enemies.push(enemy);

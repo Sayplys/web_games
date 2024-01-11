@@ -67,14 +67,13 @@ function lose(enemies){
     let playerCollider = player.collider();
     for(let i = 0; i < enemies.length; i++){
         let enemyCollider = enemies[i].collider()
-        if(playerCollider.left < enemyCollider.right && playerCollider.right > enemyCollider.left){
-            if(playerCollider.botton  > enemyCollider.top){
-                console.log(enemyCollider)
-                console.log(playerCollider)
-                losemsg.style.visibility = "visible"
-                losemsg.innerHTML = "you lose"
-                isGameRunning = false
-            }
+        if(playerCollider.left < enemyCollider.right && 
+            playerCollider.right > enemyCollider.left && 
+            playerCollider.botton  > enemyCollider.top){
+
+            losemsg.style.visibility = "visible"
+            losemsg.innerHTML = "you lose"
+            isGameRunning = false
         } 
     }
 }
