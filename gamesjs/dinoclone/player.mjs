@@ -40,7 +40,8 @@ function Player() {
             let enemyCollider = enemies[i].collider()
             if(playerCollider.left < enemyCollider.right && 
                 playerCollider.right > enemyCollider.left && 
-                playerCollider.botton  > enemyCollider.top){
+                playerCollider.botton  > enemyCollider.top &&
+                playerCollider.top < enemyCollider.botton){
     
                 losemsg.style.visibility = "visible"
                 losemsg.innerHTML = "you lose"

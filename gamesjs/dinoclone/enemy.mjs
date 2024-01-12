@@ -60,8 +60,11 @@ function Spawn(x, y, minTime, maxTime, enemy) {
 let enemy = new Enemy(0, 0, "red", 20, 40, 0.2)
 let spawn = new Spawn(canvas.width, floorY, 1000, 3000, enemy)
 
+let flyingEnemy = new Enemy(0, 0, "red", 30, 30, 0.2)
+let spawnFlyingEnemy = new Spawn(canvas.width, floorY - 200, 2000, 4000, flyingEnemy)
 
-spawn.spawn(canvas.width, floorY);
+spawn.spawn();
+setTimeout(() => spawnFlyingEnemy.spawn(), 2000)
 
 export function updateEnemy(deltaTime){
     for(let i = 0; i < enemies.length; i++){
