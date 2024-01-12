@@ -1,67 +1,74 @@
 var canvas = document.getElementById('gameCanvas')
 import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs";
-import { isGameRunning } from "./player.mjs";
+import { isGameRunning, points } from "./player.mjs";
 
-function Enemy(x, y, color, width, height) {
+export let enemies = []
+
+function Enemy(x, y, color, width, height, velocity) {
     this.x = x - width
     this.y = y - height
     this.color = color
     this.width = width
     this.height = height
+    this.velocity = velocity
     this.hasPassed = false
-    this.collider = function() {
+
+    this.collider = () => {
         let left = this.x 
         let right = +this.x + +width 
         let top = this.y
         let botton = +this.y + +height
         return {left, right, top, botton}
     }
-}
 
-const spawn = {
-    maxSpawnTime: 3000,
-    minSpawnTime: 1000
-}
+    this.move = (deltaTime) => {
+        this.x -= deltaTime * this.velocity + (points ) ;
+    }
 
-let randomInterval = Math.random() * (spawn.maxSpawnTime - spawn.minSpawnTime) + spawn.minSpawnTime;
-let enemies = [];
+    this.die = () => {
+        if(enemies[0])
+        if(enemies[0].x < 0 - enemies[0].width){
+            enemies.shift()
+        }
+    }
 
-
-function spawnEnemy(x, y){
-    let enemy = new Enemy(x, y, 'red', '20', '40')
-    ctx.fillStyle = enemy.color
-    ctx.fillRect(x, y, enemy.width, enemy.height)
-    enemies.push(enemy);
-    randomInterval = Math.random() * (spawn.maxSpawnTime - spawn.minSpawnTime) + spawn.minSpawnTime
-}
-
-function printEnemies(deltaTime){
-    for(var i = 0; i < enemies.length; i++){
-        ctx.fillStyle = enemies[i].color 
-        ctx.fillRect(enemies[i].x, enemies[i].y, enemies[i].width, enemies[i].height)
-        enemies[i].x -= deltaTime * 0.18;
+    this.print = () => {
+        ctx.fillStyle = this.color 
+        ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
 
-function removeEnemy(){
-    if(enemies[0].x < 0 - enemies[0].width){
-        enemies.shift()
+function Spawn(x, y, minTime, maxTime, enemy) {
+    this.x = x
+    this.y = y
+    this.maxTime = minTime
+    this.minTime = maxTime
+    this.enemy = enemy
+    
+    this.spawn = () => {
+        let enemy = new Enemy(x, y, this.enemy.color, this.enemy.width, this.enemy.height, this.enemy.velocity)
+        enemies.push(enemy);
+        let randomInterval = Math.random() * (this.maxTime - this.minTime) + this.minTime
+        if(isGameRunning){
+            setTimeout(()=> {this.spawn(this.x, this.y)}, randomInterval);
+        }
     }
 }
 
-export function spawnEnemyAtRandomIntervals() {
-    spawnEnemy(canvas.width, floorY);
-    if(isGameRunning){
-        setTimeout(()=> {spawnEnemyAtRandomIntervals(floorY)}, randomInterval);
-    }
-    return enemies
-}
+let enemy = new Enemy(0, 0, "red", 20, 40, 0.2)
+let spawn = new Spawn(canvas.width, floorY, 1000, 3000, enemy)
+
+
+spawn.spawn(canvas.width, floorY);
 
 export function updateEnemy(deltaTime){
-    printEnemies(deltaTime)
-    if(isGameRunning)
-        removeEnemy()
+    for(let i = 0; i < enemies.length; i++){
+        enemies[i].print(deltaTime)
+        enemies[i].move(deltaTime)
+    }
+    if(isGameRunning && enemies[0])
+        enemies[0].die()
 }
 
 
