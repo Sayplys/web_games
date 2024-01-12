@@ -4,6 +4,7 @@ import { floorY } from "./enviroment.mjs"
 const losemsg = document.getElementById('lose-message')
 
 let deltaTime = 0
+let isKeyPressed = false
 export let isGameRunning = true
 
 function Player() {
@@ -25,7 +26,7 @@ function Player() {
     }
 
     this.jump = () => {
-        player.yVelocity = 1
+        player.yVelocity = 0.5
         player.y -= deltaTime * player.yVelocity
     }
 
@@ -52,7 +53,6 @@ function Player() {
 }
 
 let player = new Player()
-let floorLimit = floorY - player.height
 
 export function updatePlayer(delta, enemies){
     player.print()
@@ -60,11 +60,21 @@ export function updatePlayer(delta, enemies){
     if(isGameRunning){ 
         player.lose(enemies)
     }
+    if(isKeyPressed === true && player.y > 600)
+        player.jump(deltaTime)
+    else
+        isKeyPressed = false
     return player
 }
 
 document.addEventListener('keydown', function(event){
-    if(event.key === 'ArrowUp' && player.y >= floorLimit && isGameRunning){
-        player.jump(deltaTime)
+    if(event.key === 'ArrowUp' && player.y >= floorY - player.height && isGameRunning){
+        isKeyPressed = true;
+    }
+})
+
+document.addEventListener('keyup', function(event){
+    if(event.key === 'ArrowUp'){
+        isKeyPressed = false;
     }
 })
