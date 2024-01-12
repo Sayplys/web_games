@@ -1,6 +1,6 @@
 export let points = 0
 let counter =  document.getElementById("pointconter")
-const losemsg = document.getElementById('lose-message')
+
 
 export function countPoint(player, enemies){
     let playerCollider = player.collider();

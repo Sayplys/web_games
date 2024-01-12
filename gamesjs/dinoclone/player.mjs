@@ -1,6 +1,8 @@
 import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs"
 
+const losemsg = document.getElementById('lose-message')
+
 let deltaTime = 0
 export let isGameRunning = true
 

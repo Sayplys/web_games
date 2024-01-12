@@ -1,5 +1,5 @@
 import { floorY, updateEnviroment } from "./dinoclone/enviroment.mjs"
-import { updatePlayer} from "./dinoclone/player.mjs"
+import { updatePlayer, isGameRunning } from "./dinoclone/player.mjs"
 import { updateEnemy, enemies } from "./dinoclone/enemy.mjs"
 import { gravity, countPoint } from "./dinoclone/gameRules.mjs"
 
@@ -16,8 +16,10 @@ function update(timeStamp){
     let player = updatePlayer(deltaTime, enemies)
     updateEnemy(deltaTime)
 
-    gravity(player, deltaTime, floorY)
-    countPoint(player, enemies)
+    if(isGameRunning){
+        gravity(player, deltaTime, floorY)
+        countPoint(player, enemies)
+    }
 
     lastTime = timeStamp
     requestAnimationFrame(update)
