@@ -1,7 +1,8 @@
 var canvas = document.getElementById('gameCanvas')
 import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs";
-import { isGameRunning, points } from "./player.mjs";
+import { isGameRunning } from "./player.mjs";
+import { points } from "./gameRules.mjs";
 
 export let enemies = []
 
@@ -45,7 +46,7 @@ function Spawn(x, y, minTime, maxTime, enemy) {
     this.maxTime = minTime
     this.minTime = maxTime
     this.enemy = enemy
-    
+
     this.spawn = () => {
         let enemy = new Enemy(x, y, this.enemy.color, this.enemy.width, this.enemy.height, this.enemy.velocity)
         enemies.push(enemy);

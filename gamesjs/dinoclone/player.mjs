@@ -1,9 +1,6 @@
 import { ctx } from "../dinoclone.mjs"
 import { floorY } from "./enviroment.mjs"
 
-export let points = 0;
-let counter =  document.getElementById("pointconter")
-const losemsg = document.getElementById('lose-message')
 let deltaTime = 0
 export let isGameRunning = true
 
@@ -49,44 +46,18 @@ function Player() {
             } 
         }
     }
-
-    this.countPoint = (enemies) => {
-        let playerCollider = player.collider();
-        for(let i = 0; i < enemies.length; i++){
-            let enemyCollider = enemies[i].collider()
-            if(playerCollider.left > enemyCollider.right && enemies[i].hasPassed === false){
-                enemies[i].hasPassed = true;
-                points++
-                counter.innerHTML = "points: " + points
-            }
-        }
-    }
 }
 
 let player = new Player()
 let floorLimit = floorY - player.height
 
-function gravity(){
-    if(player.y < floorLimit){
-        player.yVelocity -=  deltaTime * 0.003
-    }
-    else{
-        player.yVelocity = 0
-    }
-    player.y -= deltaTime * player.yVelocity
-    if(player.y > floorLimit){
-        player.y = floorLimit
-    }
-}
-
 export function updatePlayer(delta, enemies){
     player.print()
     deltaTime = delta
-    gravity(enemies)
     if(isGameRunning){ 
-        player.countPoint(enemies)
         player.lose(enemies)
     }
+    return player
 }
 
 document.addEventListener('keydown', function(event){
